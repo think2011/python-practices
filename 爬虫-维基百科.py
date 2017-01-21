@@ -1,6 +1,16 @@
 import requests as r
 from bs4 import BeautifulSoup
 import re
+import pymysql.cursors
+
+# 连接数据库
+connection = pymysql.connect(
+    host='127.0.0.1',
+    user='root',
+    password='',
+    db='wiki',
+    charset='utf8'
+)
 
 origin = 'https://en.wikipedia.org'
 url = origin + '/wiki/Main_Page'
@@ -22,5 +32,13 @@ soup = BeautifulSoup(res.text, 'lxml')
 # 提取有效链接
 urls = soup.findAll('a', href=re.compile('^/wiki/'))
 
-for url in urls:
-    print(origin + url['href'])
+try:
+    # 写入数据库
+    for url in urls:
+        with connection.cursor() as cursor:
+            sql = 'INSERT INTO urls(name,url) VALUES(%s,%s)'
+            cursor.execute(sql, (url.get_text(), url['href']))
+
+    connection.commit()
+finally:
+    connection.close()
