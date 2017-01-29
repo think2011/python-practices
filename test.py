@@ -1,3 +1,11 @@
-import sys
+class Test:
+    def __init__(self):
+        self.xx = '123'
 
-print(sys.argv[1])
+    def ok(self,str):
+        print(str)
+
+
+test = Test()
+
+test.ok('ookok')
