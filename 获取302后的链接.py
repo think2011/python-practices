@@ -1,13 +1,9 @@
 import json
+from urllib import parse
 import requests
 
 urls = [
-    'https://tb.cn/85M7x8x',
-    'https://tb.cn/LGL6x8x',
-    'https://tb.cn/o2m5x8x',
-    'https://tb.cn/w475x8x',
-    'https://tb.cn/zok3x8x',
-    'https://tb.cn/ZFa2x8x',
+    'https://tb.cn/Tt1ou8x'
 ]
 cookies = [
     {
@@ -488,7 +484,7 @@ for url in urls:
     r = requests.get(url, headers=headers, cookies=newCookies)
     results.append({
         'url': url.replace('https://', '//'),
-        'qnUrl': r.url.replace('https://', '//qianniu.')
+        'qnUrl': parse.unquote(r.url.replace('https://', '//qianniu.'))
     })
 
-print(json.dumps(results, indent=2))
+print(json.dumps(results, indent=2, ensure_ascii=False))
